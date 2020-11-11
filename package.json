@@ -9,8 +9,8 @@
   "scripts": {
     "cli": "node src/cli.js",
     "lint": "eslint .",
-    "test": "echo '@todo' && exit 0",
-    "test-ci": "echo '@todo CI' && exit 0"
+    "test": "nyc --reporter=text mocha test/*.spec.js && rm -r .nyc_output",
+    "test-ci": "nyc --reporter=lcov mocha test/*.spec.js && codecov"
   },
   "files": [
     "src/**/*.js",
@@ -28,6 +28,7 @@
   "keywords": [
     "mac",
     "macos",
+    "apple",
     "trash",
     "recycle",
     "bin",
@@ -39,8 +40,12 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "chai": "^4.2.0",
+    "codecov": "^3.8.1",
     "eslint": "^7.13.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
     "prettier": "^2.1.2"
   },
   "engines": {

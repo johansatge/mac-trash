@@ -1,9 +1,11 @@
+<img height="100px" src="icon.png" alt="mac-trash icon">
+
 [![Version](https://img.shields.io/npm/v/mac-trash.svg)](https://github.com/johansatge/mac-trash/releases)
 [![Downloads](https://img.shields.io/npm/dm/mac-trash.svg)](https://www.pkgstats.com/pkg:mac-trash)
 [![Last commit](https://badgen.net/github/last-commit/johansatge/mac-trash)](https://github.com/johansatge/mac-trash/commits/master)
+[![Build status](https://travis-ci.com/johansatge/mac-trash.svg?branch=master)](https://travis-ci.com/johansatge/mac-trash)
+[![Coverage](https://badgen.net/codecov/c/github/johansatge/mac-trash)](https://codecov.io/github/johansatge/mac-trash/)
 [![Install size](https://badgen.net/packagephobia/install/mac-trash)](https://packagephobia.com/result?p=mac-trash)
-
-![Icon](icon.png)
 
 > Zero-dependency macOS CLI tool to move files to the Trash
 
@@ -62,7 +64,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
-| `1.0.0` | 2020-11-11 | Initial version |
+| `1.0.0` | 2020-11-15 | Initial version |
 
 ## License
 

@@ -21,15 +21,15 @@ async function run() {
   for (const file of filesList) {
     const absPath = path.resolve(process.cwd(), file)
     try {
-      await checkFile(absPath)
+      await checkFileExists(absPath)
       await trashFile(absPath)
       trashedFiles += 1
     } catch (error) {
       console.log(`Could not trash ${style.red(file)} (${error.message})`)
     }
-    const trashedFilesCount = `${trashedFiles} ${trashedFiles === 1 ? 'file' : 'files'}`
-    console.log(`Moved ${style.cyan(trashedFilesCount)} to the Trash. 🗑️`)
   }
+  const trashedFilesCount = `${trashedFiles} ${trashedFiles === 1 ? 'file' : 'files'}`
+  console.log(`Moved ${style.cyan(trashedFilesCount)} to the Trash. 🗑️`)
 }
 
 async function trashFile(filePath) {
@@ -50,7 +50,7 @@ async function trashFile(filePath) {
   })
 }
 
-async function checkFile(filePath) {
+async function checkFileExists(filePath) {
   try {
     if (isVerbose) {
       console.log(`Checking if "${filePath}" exists`)
