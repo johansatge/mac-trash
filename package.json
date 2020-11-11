@@ -1,0 +1,51 @@
+{
+  "name": "mac-trash",
+  "version": "1.0.0",
+  "description": "Zero-dependency macOS CLI tool to move files to the Trash",
+  "author": "Johan Satgé",
+  "bin": {
+    "trash": "./src/cli.js"
+  },
+  "scripts": {
+    "cli": "node src/cli.js",
+    "lint": "eslint .",
+    "test": "echo '@todo' && exit 0",
+    "test-ci": "echo '@todo CI' && exit 0"
+  },
+  "files": [
+    "src/**/*.js",
+    "package.json",
+    "readme.md",
+    "license.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johansatge/mac-trash"
+  },
+  "bugs": {
+    "url": "https://github.com/johansatge/mac-trash/issues"
+  },
+  "keywords": [
+    "mac",
+    "macos",
+    "trash",
+    "recycle",
+    "bin",
+    "corbeille",
+    "rm",
+    "cli",
+    "shell",
+    "terminal"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "preferGlobal": true,
+  "license": "MIT"
+}
