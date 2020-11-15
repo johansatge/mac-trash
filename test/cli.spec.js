@@ -15,6 +15,7 @@ describe('cli', function () {
     expect(await fileExists(trashPath1)).to.equal(true)
     expect(await fileExists(trashPath2)).to.equal(true)
     expect(stdout).to.contain('2 files')
+    expect(stdout).to.not.contain('Running /usr/bin/osascript')
     expect(stderr).to.equal('')
   })
 
@@ -30,6 +31,10 @@ describe('cli', function () {
     const { desktopPath } = await createTestFile()
     const { stdout, stderr } = await execMacTrashCli(`${desktopPath} --verbose`)
     expect(stdout).to.contain('Running /usr/bin/osascript')
+    expect(stdout).to.contain('Error: none')
+    expect(stdout).to.contain('Stdout:')
+    expect(stdout).to.contain('Stderr:')
+    expect(stdout).to.contain('of folder .Trash')
     expect(stdout).to.contain(desktopPath)
     expect(stderr).to.equal('')
   })
