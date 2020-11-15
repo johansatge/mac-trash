@@ -64,6 +64,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `1.0.1` | 2020-11-15 | Fix CLI initialization |
 | `1.0.0` | 2020-11-15 | Initial version |
 
 ## License
