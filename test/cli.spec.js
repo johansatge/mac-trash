@@ -34,7 +34,7 @@ describe('cli', function () {
     expect(stdout).to.contain('Error: none')
     expect(stdout).to.contain('Stdout:')
     expect(stdout).to.contain('Stderr:')
-    expect(stdout).to.contain('of folder .Trash')
+    expect(stdout).to.contain('.Trash')
     expect(stdout).to.contain(desktopPath)
     expect(stderr).to.equal('')
   })
