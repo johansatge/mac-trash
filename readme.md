@@ -20,7 +20,7 @@
 
 ## Demo
 
-@todo GIF & icon
+<img src="demo.gif" width="100%" alt="mac-trash demo in the macOS Terminal">
 
 ## Installation
 
