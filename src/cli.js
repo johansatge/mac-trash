@@ -82,7 +82,7 @@ async function checkFileIsWritable(filePath) {
 }
 
 async function getHfsPath(posixPath) {
-  const escapedPath = posixPath.replaceAll('"', '\\\\\\"')
+  const escapedPath = posixPath.replace(/"/g, '\\\\\\"')
   const osascript = `tell application \\"Finder\\" to return posix file \\"${escapedPath}\\"`
   const { stdout } = await executeCommand(`/usr/bin/osascript -e "${osascript}"`)
   const hfsPath = stdout.match(/^file (.*)/)

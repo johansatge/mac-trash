@@ -37,7 +37,7 @@ async function fileExists(filePath) {
 }
 
 async function execMacTrashCli(args) {
-  args = args.replaceAll('"', '\\"')
+  args = args.replace(/"/g, '\\"')
   return new Promise((resolve, reject) => {
     const command = `node cli.js ${args}`
     exec(command, { cwd: path.join(__dirname, '..', 'src') }, (error, stdout, stderr) => {
