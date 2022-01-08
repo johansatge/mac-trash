@@ -22,7 +22,7 @@ describe('cli', function () {
   it('fails gracefully if the file cannot be moved to the Trash', async () => {
     const nonExistingFile = getRandomFilename()
     const { stdout, stderr } = await execMacTrashCli(nonExistingFile)
-    expect(stdout).to.contain('Could not trash')
+    expect(stdout).to.contain('Will not trash')
     expect(stdout).to.contain(nonExistingFile)
     expect(stderr).to.equal('')
   })
@@ -30,8 +30,7 @@ describe('cli', function () {
   it('outputs debug info with the --verbose flag', async () => {
     const { desktopPath } = await createTestFile()
     const { stdout, stderr } = await execMacTrashCli(`${desktopPath} --verbose`)
-    expect(stdout).to.contain('Running /usr/bin/osascript')
-    expect(stdout).to.contain('Error: none')
+    expect(stdout).to.contain('Executing trash script')
     expect(stdout).to.contain('Stdout:')
     expect(stdout).to.contain('Stderr:')
     expect(stdout).to.contain('.Trash')
