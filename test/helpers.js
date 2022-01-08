@@ -24,7 +24,7 @@ async function createTestFile() {
 }
 
 function getRandomFilename() {
-  return `mac-trash-${crypto.randomBytes(12).toString('hex')}.txt`
+  return `mac-"trash"-${crypto.randomBytes(12).toString('hex')}.txt`
 }
 
 async function fileExists(filePath) {
@@ -37,6 +37,7 @@ async function fileExists(filePath) {
 }
 
 async function execMacTrashCli(args) {
+  args = args.replace(/"/g, '\\"')
   return new Promise((resolve, reject) => {
     const command = `node cli.js ${args}`
     exec(command, { cwd: path.join(__dirname, '..', 'src') }, (error, stdout, stderr) => {

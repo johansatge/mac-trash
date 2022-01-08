@@ -1,9 +1,9 @@
 os: osx
 language: node_js
 node_js:
+  - '16'
   - '14'
   - '12'
-  - '10'
 script:
   - npm run lint
   - npm run test-ci

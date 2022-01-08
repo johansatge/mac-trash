@@ -24,7 +24,7 @@
 
 ## Installation
 
-_This module needs Node `>=10`._
+_This module needs Node `>=12`._
 
 Install with [npm](https://www.npmjs.com/):
 
@@ -64,6 +64,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `2.0.0` | 2022-01-08 | Rework deletion method, update deps, update Node support (#1) |
 | `1.0.1` | 2020-11-15 | Fix CLI initialization |
 | `1.0.0` | 2020-11-15 | Initial version |
 
