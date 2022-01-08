@@ -24,7 +24,7 @@
 
 ## Installation
 
-_This module needs Node `>=10`._
+_This module needs Node `>=12`._
 
 Install with [npm](https://www.npmjs.com/):
 

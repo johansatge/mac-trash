@@ -38,18 +38,17 @@
     "shell",
     "terminal"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "chai": "^4.2.0",
-    "codecov": "^3.8.1",
-    "eslint": "^7.13.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.2.1",
+    "chai": "^4.3.4",
+    "codecov": "^3.8.3",
+    "eslint": "^8.6.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^9.1.3",
     "nyc": "^15.1.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.5.1"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "preferGlobal": true,
   "license": "MIT"
