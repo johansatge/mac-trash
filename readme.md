@@ -64,6 +64,7 @@ This project uses [semver](http://semver.org/).
 
 | Version | Date | Notes |
 | --- | --- | --- |
+| `3.0.0` | 2023-01-12 | Drop Node 12 support |
 | `2.0.0` | 2022-01-08 | Rework deletion method, update deps, update Node support (#1) |
 | `1.0.1` | 2020-11-15 | Fix CLI initialization |
 | `1.0.0` | 2020-11-15 | Initial version |
