@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/npm/v/mac-trash.svg)](https://github.com/johansatge/mac-trash/releases)
 [![Downloads](https://img.shields.io/npm/dm/mac-trash.svg)](https://www.pkgstats.com/pkg:mac-trash)
 [![Last commit](https://badgen.net/github/last-commit/johansatge/mac-trash)](https://github.com/johansatge/mac-trash/commits/master)
-[![Build status](https://travis-ci.com/johansatge/mac-trash.svg?branch=master)](https://travis-ci.com/johansatge/mac-trash)
+[![Test](https://github.com/johansatge/mac-trash/actions/workflows/test.yml/badge.svg)](https://github.com/johansatge/mac-trash/actions)
 [![Codecov](https://codecov.io/gh/johansatge/mac-trash/branch/master/graph/badge.svg?token=Q9TTUjGPW5)](https://codecov.io/gh/johansatge/mac-trash)
 [![Install size](https://badgen.net/packagephobia/install/mac-trash)](https://packagephobia.com/result?p=mac-trash)
 
