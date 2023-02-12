@@ -4,7 +4,7 @@
 [![Downloads](https://img.shields.io/npm/dm/mac-trash.svg)](https://www.pkgstats.com/pkg:mac-trash)
 [![Last commit](https://badgen.net/github/last-commit/johansatge/mac-trash)](https://github.com/johansatge/mac-trash/commits/master)
 [![Build status](https://travis-ci.com/johansatge/mac-trash.svg?branch=master)](https://travis-ci.com/johansatge/mac-trash)
-[![Coverage](https://badgen.net/codecov/c/github/johansatge/mac-trash)](https://codecov.io/github/johansatge/mac-trash/)
+[![Codecov](https://codecov.io/gh/johansatge/mac-trash/branch/master/graph/badge.svg?token=Q9TTUjGPW5)](https://codecov.io/gh/johansatge/mac-trash)
 [![Install size](https://badgen.net/packagephobia/install/mac-trash)](https://packagephobia.com/result?p=mac-trash)
 
 > Zero-dependency macOS CLI tool to move files to the Trash
