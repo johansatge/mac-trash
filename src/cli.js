@@ -76,7 +76,7 @@ async function checkFileIsWritable(filePath) {
   verbose(`Checking if "${filePath}" is writable`)
   try {
     await fsp.stat(filePath, fs.constants.W_OK)
-  } catch (error) {
+  } catch {
     throw new Error('File not writable')
   }
 }
