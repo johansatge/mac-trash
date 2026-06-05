@@ -52,6 +52,5 @@
   "engines": {
     "node": ">=22"
   },
-  "preferGlobal": true,
   "license": "MIT"
 }

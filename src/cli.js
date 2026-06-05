@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-const exec = require('child_process').exec
+const { execFile } = require('child_process')
 const path = require('path')
-const fs = require('fs')
-const os = require('os')
+const { constants } = require('fs')
 const fsp = require('fs').promises
+const crypto = require('crypto')
+const os = require('os')
 const { style } = require('./style.js')
 const pkg = require('../package.json')
 const { showVersionAndExit, showHelpAndExit } = require('./help.js')
@@ -25,66 +26,93 @@ run()
 async function run() {
   // Create a list of hfs paths ("Macintosh HD:someDir:someFile")
   // from the user input (POSIX paths "/someDir/someFile")
-  const hfsFiles = []
-  for (const file of filesList) {
-    try {
+  const results = await Promise.allSettled(
+    filesList.map(async (file) => {
       const absPosixPath = path.resolve(process.cwd(), file)
       await checkFileIsWritable(absPosixPath)
-      hfsFiles.push(await getHfsPath(absPosixPath))
-    } catch (error) {
-      console.log(`Will not trash ${style.red(file)} (${error.message})`)
+      return getHfsPath(absPosixPath)
+    })
+  )
+  const hfsFiles = []
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].status === 'fulfilled') {
+      hfsFiles.push(results[i].value)
+    } else {
+      console.log(`Will not trash ${style.red(filesList[i])} (${results[i].reason.message})`)
     }
+  }
+  if (hfsFiles.length === 0) {
+    process.exit(1)
   }
   // Generate a temporary JS script and run it with osascript
   // (Running osascript -e [expression] could cause buffer overflow if too many files)
+  const scriptPath = await generateTrashScript(hfsFiles)
   try {
-    const scriptPath = await generateTrashScript(hfsFiles)
     await executeTrashScript(scriptPath)
-    await deleteTrashScript(scriptPath)
   } catch (error) {
     console.log(`Trash error (${style.red(error.message)})`)
+    await deleteTrashScript(scriptPath)
+    process.exit(1)
   }
+  await deleteTrashScript(scriptPath)
   const trashedFilesCount = `${hfsFiles.length} ${hfsFiles.length === 1 ? 'file' : 'files'}`
   console.log(`Moved ${style.cyan(trashedFilesCount)} to the Trash. 🗑️`)
 }
 
 async function generateTrashScript(hfsFiles) {
-  verbose(`Generating trash script from ${hfsFiles.length} items`)
-  const scriptPath = path.join(os.tmpdir(), `${pkg.name}.${Date.now()}.${Math.random()}.js`)
+  const scriptPath = path.join(os.tmpdir(), `${pkg.name}-${crypto.randomBytes(8).toString('hex')}.js`)
   // Running a JS script instead of AppleScript to be able to pass a JSON array with files
   // Note finder.delete() seems to only accept HFS paths, not POSIX paths, hence the conversion above
   const script = `const finder = Application('Finder')\nfinder.delete(${JSON.stringify(hfsFiles)})`
-  verbose(script)
+  verbose(`📝 Generating script ${scriptPath}`)
+  verbose(
+    script
+      .split('\n')
+      .map((line) => `   ${line}`)
+      .join('\n')
+  )
   await fsp.writeFile(scriptPath, script, 'utf8')
   return scriptPath
 }
 
 async function executeTrashScript(scriptPath) {
-  const shellCommand = `/usr/bin/osascript -l JavaScript ${scriptPath}`
-  verbose(`Executing trash script (${shellCommand})`)
-  const { stdout, stderr } = await executeCommand(shellCommand)
-  verbose(`Stdout: ${stdout.trim()}`)
-  verbose(`Stderr: ${stderr.trim()}`)
+  verbose(`▶️  Running osascript -l JavaScript ${scriptPath}`)
+  const { stdout, stderr } = await new Promise((resolve, reject) => {
+    execFile('/usr/bin/osascript', ['-l', 'JavaScript', scriptPath], (error, stdout, stderr) => {
+      error ? reject(error) : resolve({ stdout, stderr })
+    })
+  })
+  verbose(`   stdout: ${stdout.trim() || '(empty)'}`)
+  verbose(`   stderr: ${stderr.trim() || '(empty)'}`)
 }
 
 async function deleteTrashScript(scriptPath) {
-  verbose(`Deleting trash script (${scriptPath})`)
+  verbose(`🗑️  Deleting ${scriptPath}`)
   await fsp.unlink(scriptPath)
 }
 
 async function checkFileIsWritable(filePath) {
-  verbose(`Checking if "${filePath}" is writable`)
+  verbose(`🔍 Checking "${filePath}"`)
   try {
-    await fsp.stat(filePath, fs.constants.W_OK)
+    await fsp.access(filePath, constants.F_OK)
+  } catch {
+    throw new Error('File not found')
+  }
+  try {
+    await fsp.access(filePath, constants.W_OK)
   } catch {
     throw new Error('File not writable')
   }
 }
 
 async function getHfsPath(posixPath) {
-  const escapedPath = posixPath.replace(/"/g, '\\\\\\"')
-  const osascript = `tell application \\"Finder\\" to return posix file \\"${escapedPath}\\"`
-  const { stdout } = await executeCommand(`/usr/bin/osascript -e "${osascript}"`)
+  const escapedPath = posixPath.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r')
+  const expression = `tell application "Finder" to return posix file "${escapedPath}"`
+  const { stdout } = await new Promise((resolve, reject) => {
+    execFile('/usr/bin/osascript', ['-e', expression], (error, stdout, stderr) => {
+      error ? reject(error) : resolve({ stdout, stderr })
+    })
+  })
   const hfsPath = stdout.match(/^file (.*)/)
   if (!hfsPath) {
     throw new Error('Could not find HFS path')
@@ -92,16 +120,8 @@ async function getHfsPath(posixPath) {
   return hfsPath[1].trim()
 }
 
-function executeCommand(command) {
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      error ? reject(error) : resolve({ stdout, stderr })
-    })
-  })
-}
-
-function verbose() {
+function verbose(line) {
   if (isVerbose) {
-    console.log(...arguments)
+    console.log(style.dim(line))
   }
 }
