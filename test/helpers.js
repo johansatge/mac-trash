@@ -31,7 +31,7 @@ async function fileExists(filePath) {
   try {
     const stat = await fsp.stat(filePath)
     return stat.isFile()
-  } catch (error) {
+  } catch {
     return false
   }
 }
