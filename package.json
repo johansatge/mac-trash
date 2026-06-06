@@ -1,6 +1,6 @@
 {
   "name": "mac-trash",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Zero-dependency macOS CLI tool to move files to the Trash",
   "author": "Johan Satgé",
   "bin": {
