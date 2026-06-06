@@ -2,7 +2,7 @@ const fsp = require('fs').promises
 const homedir = require('os').homedir()
 const path = require('path')
 const crypto = require('crypto')
-const exec = require('child_process').exec
+const { execFile } = require('child_process')
 
 module.exports = {
   createTestFile,
@@ -11,14 +11,13 @@ module.exports = {
   execMacTrashCli,
 }
 
-async function createTestFile() {
-  const testFile = getRandomFilename()
-  const desktopPath = path.join(homedir, 'Desktop', testFile)
-  const trashPath = path.join(homedir, '.Trash', testFile)
+async function createTestFile(filename = getRandomFilename()) {
+  const desktopPath = path.join(homedir, 'Desktop', filename)
+  const trashPath = path.join(homedir, '.Trash', filename)
   await fsp.writeFile(desktopPath, 'Test content', 'utf8')
   const alreadyInTrash = await fileExists(trashPath)
   if (alreadyInTrash) {
-    throw new Error(`Test file ${testFile} already exists in Trash`)
+    throw new Error(`Test file ${filename} already exists in Trash`)
   }
   return { desktopPath, trashPath }
 }
@@ -36,12 +35,14 @@ async function fileExists(filePath) {
   }
 }
 
-async function execMacTrashCli(args) {
-  args = args.replace(/"/g, '\\"')
+async function execMacTrashCli(...args) {
   return new Promise((resolve, reject) => {
-    const command = `node cli.js ${args}`
-    exec(command, { cwd: path.join(__dirname, '..', 'src') }, (error, stdout, stderr) => {
-      error ? reject(error) : resolve({ stdout, stderr })
+    execFile('node', ['cli.js', ...args], { cwd: path.join(__dirname, '..', 'src') }, (error, stdout, stderr) => {
+      if (error && typeof error.code !== 'number') {
+        reject(error)
+      } else {
+        resolve({ stdout, stderr, exitCode: error ? error.code : 0 })
+      }
     })
   })
 }
